@@ -1,9 +1,12 @@
 import argparse
 import feedparser
+import urllib.parse
+
 
 def search_arxiv(query, max_results=10):
+    encoded_query = urllib.parse.quote(query)
     base_url = 'http://export.arxiv.org/api/query?'
-    search_query = f'search_query={query}'
+    search_query = f'search_query={encoded_query}'
     max_results = f'max_results={max_results}'
     url = f'{base_url}{search_query}&{max_results}'
 
@@ -11,9 +14,11 @@ def search_arxiv(query, max_results=10):
 
     return response.entries
 
-def main(query, max_results):
+def main(query, max_results, start_year, end_year):
     results = search_arxiv(query, max_results)
     query = "cat:hep-ph"  # 素粒子現象論に関連する論文を検索（例: "cat:hep-ph"）
+    query += f" AND submittedDate:[{start_year}0101 TO {end_year}1231]"
+
     max_results = 10  # 取得したい最大結果数
 
     results = search_arxiv(query, max_results)
@@ -42,6 +47,20 @@ def get_args():
         default=10,
         help="取得する最大結果数（デフォルト: 10）"
     )
+    parser.add_argument(
+        "-s",
+        "--start_year",
+        type=int,
+        required=True,
+        help="検索範囲の開始年（必須）"
+    )
+    parser.add_argument(
+        "-e",
+        "--end_year",
+        type=int,
+        required=True,
+        help="検索範囲の終了年（必須）"
+    )
 
     return parser.parse_args()
 
@@ -49,4 +68,4 @@ def get_args():
 if __name__ == "__main__":
     args = get_args()
     query = f"cat:{args.category}"
-    main(query, args.num_results)
+    main(query, args.num_results, args.start_year, args.end_year)
