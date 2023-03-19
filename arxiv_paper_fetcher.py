@@ -1,3 +1,4 @@
+import argparse
 import feedparser
 
 def search_arxiv(query, max_results=10):
@@ -10,7 +11,8 @@ def search_arxiv(query, max_results=10):
 
     return response.entries
 
-def main():
+def main(query, max_results):
+    results = search_arxiv(query, max_results)
     query = "cat:hep-ph"  # 素粒子現象論に関連する論文を検索（例: "cat:hep-ph"）
     max_results = 10  # 取得したい最大結果数
 
@@ -24,5 +26,27 @@ def main():
         print(f"公開日: {paper.published}")
         print(f"更新日: {paper.updated}\n")
 
-if __name__ == '__main__':
-    main()
+def get_args():
+    parser = argparse.ArgumentParser(description="arXiv論文情報取得")
+    parser.add_argument(
+        "-c",
+        "--category",
+        type=str,
+        default="hep-ph",
+        help="arXivのカテゴリ（デフォルト: hep-ph）"
+    )
+    parser.add_argument(
+        "-n",
+        "--num_results",
+        type=int,
+        default=10,
+        help="取得する最大結果数（デフォルト: 10）"
+    )
+
+    return parser.parse_args()
+
+
+if __name__ == "__main__":
+    args = get_args()
+    query = f"cat:{args.category}"
+    main(query, args.num_results)
