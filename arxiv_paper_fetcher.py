@@ -14,16 +14,16 @@ def search_arxiv(query, max_results=10):
 
     return response.entries
 
-def main(query, max_results, start_year, end_year):
-    results = search_arxiv(query, max_results)
-    query = "cat:hep-ph"  # 素粒子現象論に関連する論文を検索（例: "cat:hep-ph"）
-    query += f" AND submittedDate:[{start_year}0101 TO {end_year}1231]"
+def main(query, max_results=10, start_year=None, end_year=None, keyword=None):
+    if start_year and end_year:
+        query += f" AND submittedDate:[{start_year}0101 TO {end_year}1231]"
+    if keyword:
+        query += f' AND (ti:"{keyword}" OR abs:"{keyword}")'
 
     max_results = 10  # 取得したい最大結果数
+    papers = search_arxiv(query, max_results)
 
-    results = search_arxiv(query, max_results)
-
-    for idx, paper in enumerate(results, start=1):
+    for idx, paper in enumerate(papers, start=1):
         print(f"{idx}. {paper.title}")
         print(f"著者: {', '.join(author.name for author in paper.authors)}")
         print(f"arXiv ID: {paper.id}")
@@ -32,40 +32,16 @@ def main(query, max_results, start_year, end_year):
         print(f"更新日: {paper.updated}\n")
 
 def get_args():
-    parser = argparse.ArgumentParser(description="arXiv論文情報取得")
-    parser.add_argument(
-        "-c",
-        "--category",
-        type=str,
-        default="hep-ph",
-        help="arXivのカテゴリ（デフォルト: hep-ph）"
-    )
-    parser.add_argument(
-        "-n",
-        "--num_results",
-        type=int,
-        default=10,
-        help="取得する最大結果数（デフォルト: 10）"
-    )
-    parser.add_argument(
-        "-s",
-        "--start_year",
-        type=int,
-        required=True,
-        help="検索範囲の開始年（必須）"
-    )
-    parser.add_argument(
-        "-e",
-        "--end_year",
-        type=int,
-        required=True,
-        help="検索範囲の終了年（必須）"
-    )
-
+    parser = argparse.ArgumentParser(description="Fetch arXiv papers with specified category and keyword in title or abstract.")
+    parser.add_argument("-c", "--category", required=True, help="Category to fetch papers from")
+    parser.add_argument("-n", "--num_results", type=int, default=10, help="Number of papers to fetch")
+    parser.add_argument("-s", "--start_year", type=int, help="Start year for submitted date range")
+    parser.add_argument("-e", "--end_year", type=int, help="End year for submitted date range")
+    parser.add_argument("-k", "--keyword", help="Keyword to search in title or abstract")
     return parser.parse_args()
 
 
 if __name__ == "__main__":
     args = get_args()
     query = f"cat:{args.category}"
-    main(query, args.num_results, args.start_year, args.end_year)
+    main(query, args.num_results, args.start_year, args.end_year, args.keyword)

@@ -10,7 +10,18 @@
             "request": "launch",
             "program": "${workspaceFolder}/arxiv_paper_fetcher.py",
             "console": "integratedTerminal",
-            "args": ["-c", "hep-ph", "-n", "5", "-s", "2020", "-e", "2021"] // 引数の値をダブルクォーテーションで囲んで指定してください
+            "args": [
+                "-c",
+                "hep-ph",
+                "-n",
+                "5",
+                "-s",
+                "2020",
+                "-e",
+                "2021",
+                "-k",
+                "dark matter"
+            ]
         }
     ]
 }
