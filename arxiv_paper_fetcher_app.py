@@ -37,12 +37,14 @@ def build_query(category, start_year, end_year, keyword):
 
 def display_papers(papers):
     for idx, paper in enumerate(papers, start=1):
-        st.write(f"{idx}. {paper.title}")
-        st.write(f"著者: {', '.join(author.name for author in paper.authors)}")
-        st.write(f"arXiv ID: {paper.id}")
-        st.write(f"要約: {paper.summary[:200]}...")
-        st.write(f"公開日: {paper.published}")
-        st.write(f"更新日: {paper.updated}\n")
+        with st.container():
+            st.markdown(f"**{idx}. {paper.title}**")
+            st.markdown(f"著者: {', '.join(author.name for author in paper.authors)}")
+            st.markdown(f"arXiv ID: {paper.id}")
+            st.markdown(f"要約: {paper.summary[:200]}...")
+            st.markdown(f"公開日: {paper.published}")
+            st.markdown(f"更新日: {paper.updated}\n")
+            st.markdown("---")
 
 
 def app():
