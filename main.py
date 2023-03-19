@@ -11,7 +11,7 @@ def search_arxiv(query, max_results=10):
     return response.entries
 
 def main():
-    query = "all:deep+learning"  # 検索したいクエリ（例: "all:deep+learning"）
+    query = "cat:hep-ph"  # 素粒子現象論に関連する論文を検索（例: "cat:hep-ph"）
     max_results = 10  # 取得したい最大結果数
 
     results = search_arxiv(query, max_results)
