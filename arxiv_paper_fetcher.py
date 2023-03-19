@@ -22,7 +22,7 @@ def print_paper_info(paper, idx):
     print(f"更新日: {paper.updated}\n")
 
 
-def main(args):
+def build_query(args):
     query = f"cat:{args.category}"
     
     if args.start_year and args.end_year:
@@ -33,6 +33,11 @@ def main(args):
     if args.keyword:
         query += f' AND (ti:"{args.keyword}" OR abs:"{args.keyword}")'
 
+    return query
+
+
+def main(args):
+    query = build_query(args)
     papers = search_arxiv(query, args.num_results)
 
     for idx, paper in enumerate(papers, start=1):
@@ -50,6 +55,5 @@ def get_args():
 
 
 if __name__ == "__main__":
-    # args = get_args()
-    # main(args)
-    main(query, num_results, start_year, end_year, keyword)
+    args = get_args()
+    main(args)
