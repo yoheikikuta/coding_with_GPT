@@ -19,7 +19,7 @@ def main(query, max_results=10, start_year=None, end_year=None, keyword=None):
     if start_year and end_year:
         query += f" AND submittedDate:[{start_year}0101 TO {end_year}1231]"
     else:
-        query += f" AND submittedDate:[{datetime.now().year - 1}0101 TO {datetime.now().year}1231]"
+        query += f" AND submittedDate:[{datetime.now().year}0101 TO {datetime.now().year}1231]"
         
     if keyword:
         query += f' AND (ti:"{keyword}" OR abs:"{keyword}")'
