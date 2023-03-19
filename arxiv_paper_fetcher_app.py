@@ -41,7 +41,7 @@ def app():
     
     if st.button("Fetch Papers"):
         query = build_query(category, start_year, end_year, keyword)
-        papers = search_arxiv(query, num_results)
+        papers = search_arxiv(query, int(num_results))
         display_papers(papers)
 
 
