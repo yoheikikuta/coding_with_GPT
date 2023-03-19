@@ -50,5 +50,6 @@ def get_args():
 
 
 if __name__ == "__main__":
-    args = get_args()
-    main(args)
+    # args = get_args()
+    # main(args)
+    main(query, num_results, start_year, end_year, keyword)
