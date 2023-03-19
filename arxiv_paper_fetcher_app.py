@@ -41,7 +41,7 @@ def display_papers(papers):
             st.markdown(f"**{idx}. {paper.title}**")
             st.markdown(f"著者: {', '.join(author.name for author in paper.authors)}")
             st.markdown(f"arXiv ID: {paper.id}")
-            st.markdown(f"要約: {paper.summary[:200]}...")
+            st.markdown(f"要約: {paper.summary}")
             
             published_date = datetime.strptime(paper.published, "%Y-%m-%dT%H:%M:%SZ").date()
             st.markdown(f"公開日: {published_date}")
