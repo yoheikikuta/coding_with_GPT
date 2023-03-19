@@ -6,10 +6,7 @@ import urllib.parse
 
 def search_arxiv(query, max_results=10):
     encoded_query = urllib.parse.quote(query)
-    base_url = 'http://export.arxiv.org/api/query?'
-    search_query = f'search_query={encoded_query}'
-    max_results = f'max_results={max_results}'
-    url = f'{base_url}{search_query}&{max_results}'
+    url = f'http://export.arxiv.org/api/query?search_query={encoded_query}&sortBy=submittedDate&sortOrder=descending&max_results={max_results}'
 
     response = feedparser.parse(url)
 
